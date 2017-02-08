@@ -47,7 +47,7 @@ namespace Prometheus
 
                                 using (var outputStream = response.OutputStream)
                                 {
-                                    var collected = _registry.CollectAll();
+                                    var collected = Registry.CollectAll();
                                     ScrapeHandler.ProcessScrapeRequest(collected, contentType, outputStream);
                                 }
 

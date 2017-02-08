@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reactive.Concurrency;
 using System.Text;
-using System.Threading.Tasks;
 using Prometheus;
 
 namespace tester
 {
-    class MetricPusherTester : Tester
+    internal class MetricPusherTester : Tester
     {
-        private IDisposable _schedulerDelegate;
         private HttpListener _httpListener;
+        private IDisposable _schedulerDelegate;
 
         public override IMetricServer InitializeMetricHandler()
         {
-            return new MetricPusher(endpoint: "http://localhost:9091/metrics", job: "some_job");
+            return new MetricPusher("http://localhost:9091/metrics", "some_job");
         }
 
         public override void OnStart()
@@ -31,9 +28,7 @@ namespace tester
                     try
                     {
                         if (!_httpListener.IsListening)
-                        {
                             return;
-                        }
                         var httpListenerContext = _httpListener.GetContext();
                         var request = httpListenerContext.Request;
                         var response = httpListenerContext.Response;
@@ -73,13 +68,11 @@ namespace tester
                 Console.WriteLine("# Unexpected label information");
                 return;
             }
-            StringBuilder sb = new StringBuilder("#");
-            for (int i = idx; i < segments.Length; i++)
+            var sb = new StringBuilder("#");
+            for (var i = idx; i < segments.Length; i++)
             {
                 if (i == segments.Length - 1)
-                {
                     continue;
-                }
                 sb.AppendFormat(" {0}: {1} |", segments[i].TrimEnd('/'), segments[++i].TrimEnd('/'));
             }
             Console.WriteLine(sb.ToString().TrimEnd('|'));

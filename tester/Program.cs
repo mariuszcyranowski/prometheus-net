@@ -1,14 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.Net;
 using System.Reactive.Linq;
 using Prometheus;
 
 namespace tester
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             // use MetricServerTester or MetricPusherTester to select between metric handlers
             var tester = new MetricServerTester();
@@ -17,7 +15,7 @@ namespace tester
             var metricServer = tester.InitializeMetricHandler();
             metricServer.Start();
 
-            var counter = Metrics.CreateCounter("myCounter", "help text", labelNames: new []{ "method", "endpoint"});
+            var counter = Metrics.CreateCounter("myCounter", "help text", "method", "endpoint");
             counter.Labels("GET", "/").Inc();
             counter.Labels("POST", "/cancel").Inc();
 
@@ -27,7 +25,7 @@ namespace tester
             gauge.Dec(2.1);
             gauge.Set(5.3);
 
-            var hist = Metrics.CreateHistogram("myHistogram", "help text", buckets: new[] { 0, 0.2, 0.4, 0.6, 0.8, 0.9 });
+            var hist = Metrics.CreateHistogram("myHistogram", "help text", new[] {0, 0.2, 0.4, 0.6, 0.8, 0.9});
             hist.Observe(0.4);
 
             var summary = Metrics.CreateSummary("mySummary", "help text");

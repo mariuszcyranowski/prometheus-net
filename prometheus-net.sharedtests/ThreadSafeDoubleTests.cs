@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Globalization;
+using NUnit.Framework;
 using Prometheus.Advanced;
 
 namespace Prometheus.Tests
@@ -31,7 +32,7 @@ namespace Prometheus.Tests
             var equaltsdouble = new ThreadSafeDouble(9.15);
             var notequaltsdouble = new ThreadSafeDouble(10.11);
 
-            Assert.AreEqual("9.15", tsdouble.ToString());
+            Assert.AreEqual(9.15.ToString(CultureInfo.CurrentCulture), tsdouble.ToString());
             Assert.IsTrue(tsdouble.Equals(equaltsdouble));
             Assert.IsFalse(tsdouble.Equals(notequaltsdouble));
             Assert.IsFalse(tsdouble.Equals(null));

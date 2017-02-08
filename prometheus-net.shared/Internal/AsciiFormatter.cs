@@ -83,9 +83,7 @@ namespace Prometheus.Internal
             {
                 return familyName;
             }
-            return string.Format(
-                "{0}{{{1}}}", familyName,
-                string.Join(",", labelPairs.Select(l => string.Format("{0}=\"{1}\"", l.name, EscapeValue(l.value)))));
+            return $"{familyName}{{{string.Join(",", labelPairs.Select(l => string.Format("{0}=\"{1}\"", l.name, EscapeValue(l.value))))}}}";
         }
 
         private static string EscapeValue(string val)

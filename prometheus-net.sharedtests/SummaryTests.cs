@@ -9,7 +9,6 @@ using Prometheus.SummaryImpl;
 
 namespace Prometheus.Tests
 {
-    
     [TestFixture]
     public class SummaryTests
     {
